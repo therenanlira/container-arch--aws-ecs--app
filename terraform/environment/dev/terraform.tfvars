@@ -41,7 +41,7 @@ service_healthcheck = {
   "timeout"             = 10
   "interval"            = 60
   "matcher"             = "200-399"
-  "path"                = "/"
+  "path"                = "/healthcheck"
   "port"                = "8080"
 }
 
