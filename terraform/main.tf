@@ -1,5 +1,5 @@
 module "service" {
-  source = "../../container-arch--aws-ecs-module/"
+  source = "../../container-arch--aws-ecs--module/"
   region = var.region
 
   cluster_name         = var.cluster_name
