@@ -9,19 +9,18 @@ resource "aws_iam_role" "service_task_execution_role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
         Principal = {
           Service = "ecs-tasks.amazonaws.com"
         }
         Action = "sts:AssumeRole"
-        Sid    = "ECSAssumeRole"
+        Effect = "Allow"
       }
     ]
   })
 
   tags = {
     Name     = "${var.service_name}--${local.iam_resource_name}--role"
-    Resource = "service-execution-role"
+    Resource = "service-task-execution-role"
   }
 }
 
@@ -42,6 +41,7 @@ resource "aws_iam_role_policy" "service_execution_policy" {
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
           "s3:GetObject",
+          "sqs:*",
         ],
         Resource = "*"
       }

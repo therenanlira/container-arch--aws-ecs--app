@@ -37,6 +37,21 @@ variable "service_healthcheck" {
   type        = map(string)
 }
 
+variable "service_launch_type" {
+  description = "The launch type for the service"
+  type        = string
+}
+
+variable "service_task_count" {
+  description = "The number of tasks to run"
+  type        = number
+}
+
+variable "service_hosts" {
+  description = "The hosts for the service"
+  type        = list(string)
+}
+
 #### ECS TASK DEFINITION ####
 
 variable "environment_variables" {
