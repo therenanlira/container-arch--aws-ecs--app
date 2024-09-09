@@ -8,6 +8,7 @@ module "service" {
   service_cpu          = var.service_cpu
   service_memory       = var.service_memory
   service_listener_arn = data.aws_ssm_parameter.listener_arn.value
+  service_healthcheck  = var.service_healthcheck
 
   service_task_execution_role_arn = aws_iam_role.service_task_execution_role.arn
 

@@ -32,6 +32,11 @@ variable "service_memory" {
   type        = number
 }
 
+variable "service_healthcheck" {
+  description = "The healthcheck for the service"
+  type        = map(string)
+}
+
 #### ECS TASK DEFINITION ####
 
 variable "environment_variables" {
