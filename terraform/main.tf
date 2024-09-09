@@ -1,5 +1,6 @@
 module "service" {
   source = "../../container-arch--aws-ecs-module/"
+  region = var.region
 
   cluster_name         = var.cluster_name
   service_name         = var.service_name
@@ -18,4 +19,6 @@ module "service" {
     data.aws_ssm_parameter.private_subnet_1c.value
   ]
 
+  environment_variables = var.environment_variables
+  capabilities          = var.capabilities
 }

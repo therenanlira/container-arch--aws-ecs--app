@@ -32,6 +32,20 @@ variable "service_memory" {
   type        = number
 }
 
+#### ECS TASK DEFINITION ####
+
+variable "environment_variables" {
+  description = "The environment variables for the task definition"
+  type = list(object({
+    name  = string
+    value = string
+  }))
+}
+
+variable "capabilities" {
+  description = "The capabilities for the task definition"
+  type        = list(string)
+}
 
 #### SSM VPC PARAMETERS ####
 
