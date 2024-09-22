@@ -94,6 +94,11 @@ variable "ssm_listener_arn" {
   type        = string
 }
 
+variable "ssm_alb_arn" {
+  description = "The ARN of the ALB"
+  type        = string
+}
+
 #### ECS AUTO SCALING ####
 
 variable "scale_type" {
@@ -178,5 +183,15 @@ variable "scale_in_evaluation_periods" {
 
 variable "scale_in_cooldown" {
   description = "The cooldown for scaling in"
+  type        = number
+}
+
+variable "scale_cpu_tracking" {
+  description = "The name of the CPU tracking resource"
+  type        = number
+}
+
+variable "scale_requests_tracking" {
+  description = "The name of the requests tracking resource"
   type        = number
 }

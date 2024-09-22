@@ -45,4 +45,8 @@ module "service" {
   scale_in_period              = var.scale_in_period
   scale_in_evaluation_periods  = var.scale_in_evaluation_periods
   scale_in_cooldown            = var.scale_in_cooldown
+
+  scale_cpu_tracking      = var.scale_cpu_tracking
+  scale_requests_tracking = var.scale_requests_tracking
+  alb_arn                 = data.aws_ssm_parameter.alb_arn.value
 }

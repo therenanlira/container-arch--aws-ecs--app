@@ -9,6 +9,7 @@ ssm_private_subnet_1 = "linuxtips-vpc-private-subnet-1a"
 ssm_private_subnet_2 = "linuxtips-vpc-private-subnet-1b"
 ssm_private_subnet_3 = "linuxtips-vpc-private-subnet-1c"
 ssm_listener_arn     = "linuxtips-ecscluster--load-balancer-http-listener-arn"
+ssm_alb_arn          = "linuxtips-ecscluster--load-balancer-arn"
 
 #### ECS TASK DEFINITION ####
 
@@ -49,9 +50,9 @@ service_hosts = [
   "chip.linuxtips.demo"
 ]
 
-### ECS APP CONFIGURATION ###
+#### ECS AUTO SCALING ####
 
-scale_type   = "CPU"
+scale_type   = "requests_tracking"
 task_minimum = 1
 task_maximum = 5
 
@@ -70,3 +71,6 @@ scale_in_statistic           = "Average"
 scale_in_period              = 60
 scale_in_evaluation_periods  = 2
 scale_in_cooldown            = 60
+
+scale_cpu_tracking      = 50
+scale_requests_tracking = 30
