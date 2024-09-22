@@ -15,8 +15,8 @@ ssm_listener_arn     = "linuxtips-ecscluster--load-balancer-http-listener-arn"
 cluster_name        = "linuxtips-ecscluster"
 service_name        = "chip"
 service_port        = 8080
-service_cpu         = 256
-service_memory      = 512
+service_cpu         = 128
+service_memory      = 256
 service_launch_type = "EC2"
 service_task_count  = 2
 
