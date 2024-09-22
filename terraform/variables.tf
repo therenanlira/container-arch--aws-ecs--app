@@ -94,6 +94,8 @@ variable "ssm_listener_arn" {
   type        = string
 }
 
+#### ECS AUTO SCALING ####
+
 variable "scale_type" {
   description = "The scale type for the task definition"
   type        = string
@@ -106,5 +108,40 @@ variable "task_minimum" {
 
 variable "task_maximum" {
   description = "The maximum number of tasks to run"
+  type        = number
+}
+
+variable "scale_out_cpu_threshold" {
+  description = "The CPU threshold for scaling out"
+  type        = number
+}
+
+variable "scale_out_adjustment" {
+  description = "The number of tasks to add when scaling out"
+  type        = number
+}
+
+variable "scale_out_comparison_operator" {
+  description = "The comparison operator for scaling out"
+  type        = string
+}
+
+variable "scale_out_statistic" {
+  description = "The statistic for scaling out"
+  type        = string
+}
+
+variable "scale_out_period" {
+  description = "The period for scaling out"
+  type        = number
+}
+
+variable "scale_out_evaluation_periods" {
+  description = "The evaluation periods for scaling out"
+  type        = number
+}
+
+variable "scale_out_cooldown" {
+  description = "The cooldown for scaling out"
   type        = number
 }
