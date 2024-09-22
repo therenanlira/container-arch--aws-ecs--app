@@ -48,3 +48,7 @@ service_healthcheck = {
 service_hosts = [
   "chip.linuxtips.demo"
 ]
+
+scale_type   = "CPU"
+task_minimum = 1
+task_maximum = 3

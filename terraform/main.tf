@@ -25,4 +25,8 @@ module "service" {
 
   environment_variables = var.environment_variables
   capabilities          = var.capabilities
+
+  scale_type   = var.scale_type
+  task_minimum = var.task_minimum
+  task_maximum = var.task_maximum
 }
