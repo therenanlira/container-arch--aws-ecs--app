@@ -145,3 +145,38 @@ variable "scale_out_cooldown" {
   description = "The cooldown for scaling out"
   type        = number
 }
+
+variable "scale_in_cpu_threshold" {
+  description = "The CPU threshold for scaling in"
+  type        = number
+}
+
+variable "scale_in_adjustment" {
+  description = "The number of tasks to add when scaling in"
+  type        = number
+}
+
+variable "scale_in_comparison_operator" {
+  description = "The comparison operator for scaling in"
+  type        = string
+}
+
+variable "scale_in_statistic" {
+  description = "The statistic for scaling in"
+  type        = string
+}
+
+variable "scale_in_period" {
+  description = "The period for scaling in"
+  type        = number
+}
+
+variable "scale_in_evaluation_periods" {
+  description = "The evaluation periods for scaling in"
+  type        = number
+}
+
+variable "scale_in_cooldown" {
+  description = "The cooldown for scaling in"
+  type        = number
+}
