@@ -16,10 +16,19 @@ ssm_alb_arn          = "linuxtips-ecscluster--load-balancer-arn"
 cluster_name        = "linuxtips-ecscluster"
 service_name        = "chip"
 service_port        = 8080
-service_cpu         = 128
-service_memory      = 256
-service_launch_type = "EC2"
+service_cpu         = 256
+service_memory      = 512
 service_task_count  = 2
+service_launch_type = [
+  { 
+      capacity_provider = "FARGATE"
+      weight            = 50
+  },
+  { 
+      capacity_provider = "FARGATE_SPOT"
+      weight            = 50
+  }
+]
 
 environment_variables = [
   {
@@ -33,7 +42,8 @@ environment_variables = [
 ]
 
 capabilities = [
-  "EC2"
+  "EC2",
+  "FARGATE"
 ]
 
 service_healthcheck = {
