@@ -93,3 +93,105 @@ variable "ssm_listener_arn" {
   description = "The listener rule for the service"
   type        = string
 }
+
+variable "ssm_alb_arn" {
+  description = "The ARN of the ALB"
+  type        = string
+}
+
+#### ECS AUTO SCALING ####
+
+variable "scale_type" {
+  description = "The scale type for the task definition"
+  type        = string
+}
+
+variable "task_minimum" {
+  description = "The minimum number of tasks to run"
+  type        = number
+}
+
+variable "task_maximum" {
+  description = "The maximum number of tasks to run"
+  type        = number
+}
+
+variable "scale_out_cpu_threshold" {
+  description = "The CPU threshold for scaling out"
+  type        = number
+}
+
+variable "scale_out_adjustment" {
+  description = "The number of tasks to add when scaling out"
+  type        = number
+}
+
+variable "scale_out_comparison_operator" {
+  description = "The comparison operator for scaling out"
+  type        = string
+}
+
+variable "scale_out_statistic" {
+  description = "The statistic for scaling out"
+  type        = string
+}
+
+variable "scale_out_period" {
+  description = "The period for scaling out"
+  type        = number
+}
+
+variable "scale_out_evaluation_periods" {
+  description = "The evaluation periods for scaling out"
+  type        = number
+}
+
+variable "scale_out_cooldown" {
+  description = "The cooldown for scaling out"
+  type        = number
+}
+
+variable "scale_in_cpu_threshold" {
+  description = "The CPU threshold for scaling in"
+  type        = number
+}
+
+variable "scale_in_adjustment" {
+  description = "The number of tasks to add when scaling in"
+  type        = number
+}
+
+variable "scale_in_comparison_operator" {
+  description = "The comparison operator for scaling in"
+  type        = string
+}
+
+variable "scale_in_statistic" {
+  description = "The statistic for scaling in"
+  type        = string
+}
+
+variable "scale_in_period" {
+  description = "The period for scaling in"
+  type        = number
+}
+
+variable "scale_in_evaluation_periods" {
+  description = "The evaluation periods for scaling in"
+  type        = number
+}
+
+variable "scale_in_cooldown" {
+  description = "The cooldown for scaling in"
+  type        = number
+}
+
+variable "scale_cpu_tracking" {
+  description = "The name of the CPU tracking resource"
+  type        = number
+}
+
+variable "scale_requests_tracking" {
+  description = "The name of the requests tracking resource"
+  type        = number
+}
