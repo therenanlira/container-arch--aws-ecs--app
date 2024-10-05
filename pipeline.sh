@@ -7,6 +7,8 @@ export AWS_ACCOUNT_ID=923672208632
 export AWS_PAGER=""
 export APP_NAME="linuxtips-app"
 export CLUSTER_NAME="linuxtips-ecscluster"
+export BRANCH_NAME=$(git branch --show-current)
+export BRANCH_NAME_SHORT=$(echo $BRANCH_NAME | cut -d '/' -f 2 | cut -c 1-3)
 
 # App CI
 echo "APP - CI"
@@ -24,6 +26,9 @@ popd
 # Terraform CI
 echo "TERRAFORM - CI"
 pushd terraform/
+
+echo "TERRAFORM CI - TERRAFORM INIT"
+terraform init -backend-config="environment/$BRANCH_NAME_SHORT/backend.tfvars"
 
 echo "TERRAFORM - FORMAT CHECK"
 terraform fmt -recursive -check
@@ -83,12 +88,6 @@ popd
 # Terraform Apply
 echo "TERRAFORM CD"
 pushd terraform/
-
-BRANCH_NAME=$(git branch --show-current)
-BRANCH_NAME_SHORT=$(echo $BRANCH_NAME | cut -d '/' -f 2 | cut -c 1-3)
-
-echo "TERRAFORM CD - TERRAFORM INIT"
-terraform init -backend-config="environment/$BRANCH_NAME_SHORT/backend.tfvars"
 
 echo "TERRAFORM CD - TERRAFORM PLAN"
 terraform plan -var="container_image=$REPO_TAG" -var-file="environment/$BRANCH_NAME_SHORT/terraform.tfvars"
