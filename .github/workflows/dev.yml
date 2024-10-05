@@ -11,3 +11,26 @@ env:
   CLUSTER_NAME: "linuxtips-ecscluster"
   APP_NAME: "linuxtips-app"
   REPO_NAME: "linuxtips/$APP_NAME"
+
+jobs:
+  ci-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Golang
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Install Go Lint
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59.1
+
+      - name: Run Go Lint
+        run: golangci-lint run ./... -E errcheck
+        working-directory: ./app
+
+      - name: Run Go Test
+        run: go test ./... -v
+        working-directory: ./app
