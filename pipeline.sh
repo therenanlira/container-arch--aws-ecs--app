@@ -80,16 +80,26 @@ popd
 echo "APP PUBLISH"
 
 pushd terraform/
+BRANCH_NAME=$(git branch --show-current)
+BRANCH_NAME_SHORT=$(echo $BRANCH_NAME | cut -d '/' -f 2 | cut -c 1-3)
 
 echo "APP PUBLISH - TERRAFORM INIT"
-terraform init -backend-config="environment/dev/backend.tfvars"
+terraform init -backend-config="environment/$BRANCH_NAME_SHORT/backend.tfvars"
 
 echo "APP PUBLISH - TERRAFORM PLAN"
-terraform plan -var="container_image=$REPO_TAG" -var-file="environment/dev/terraform.tfvars"
+terraform plan -var="container_image=$REPO_TAG" -var-file="environment/$BRANCH_NAME_SHORT/terraform.tfvars"
 
 echo "APP PUBLISH - TERRAFORM APPLY"
-terraform apply -auto-approve -var="container_image=$REPO_TAG" -var-file="environment/dev/terraform.tfvars"
+terraform apply -auto-approve -var="container_image=$REPO_TAG" -var-file="environment/$BRANCH_NAME_SHORT/terraform.tfvars"
 
 popd
 
 # Terraform Apply
+echo "TERRAFORM APPLY"
+
+pushd terraform/
+
+
+
+
+popd
