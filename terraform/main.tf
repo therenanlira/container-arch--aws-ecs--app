@@ -2,6 +2,8 @@ module "service" {
   source = "../../container-arch--aws-ecs--module/"
   region = var.region
 
+  container_image = var.container_image
+
   cluster_name         = var.cluster_name
   service_name         = var.service_name
   service_port         = var.service_port

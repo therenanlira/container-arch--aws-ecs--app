@@ -12,6 +12,11 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "container_image" {
+  type        = string
+  description = "The container image to run"
+}
+
 variable "service_name" {
   description = "The name of the ECS service"
   type        = string

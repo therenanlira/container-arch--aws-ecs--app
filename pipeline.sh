@@ -8,9 +8,11 @@ export AWS_PAGER=""
 export APP_NAME="linuxtips-app"
 
 # App CI
-echo "APP - LINT"
+echo "APP - CI"
 
 pushd app/
+
+echo "APP - LINT"
 go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59.1
 golangci-lint run ./... -E errcheck
 
@@ -37,14 +39,15 @@ echo "APP BUILD"
 
 pushd app/
 
+echo "APP BUILD - GET BUILD INFO"
 GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
 echo "GIT_COMMIT_HASH: $GIT_COMMIT_HASH"
 
 echo "APP BUILD - ECR LOGIN"
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
 
+echo "APP BUILD - CHECK ECR REPOSITORY"
 set +e
-
 REPO_NAME="linuxtips/$APP_NAME"
 REPO_EXISTS=$(aws ecr describe-repositories --repository-names $REPO_NAME 2>&1)
 
@@ -64,12 +67,29 @@ fi
 set -e
 
 echo "APP BUILD - BUILD"
-docker build -t app .
-docker tag app:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$GIT_COMMIT_HASH
+REPO_TAG="$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$GIT_COMMIT_HASH"
+docker build --platform linux/amd64 -t app .
+docker tag app:latest $REPO_TAG
 
 echo "APP BUILD - PUSH"
-docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$GIT_COMMIT_HASH
+docker push $REPO_TAG
+
+popd
 
 # App Publish
+echo "APP PUBLISH"
+
+pushd terraform/
+
+echo "APP PUBLISH - TERRAFORM INIT"
+terraform init -backend-config="environment/dev/backend.tfvars"
+
+echo "APP PUBLISH - TERRAFORM PLAN"
+terraform plan -var="container_image=$REPO_TAG" -var-file="environment/dev/terraform.tfvars"
+
+echo "APP PUBLISH - TERRAFORM APPLY"
+terraform apply -auto-approve -var="container_image=$REPO_TAG" -var-file="environment/dev/terraform.tfvars"
+
+popd
 
 # Terraform Apply
