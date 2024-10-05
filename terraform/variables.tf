@@ -39,11 +39,11 @@ variable "service_healthcheck" {
 
 variable "service_launch_type" {
   description = "The launch type for the service"
-  type        = list(object({
+  type = list(object({
     capacity_provider = string
     weight            = number
   }))
-  default     = [
+  default = [
     {
       capacity_provider = "SPOT"
       weight            = 100
