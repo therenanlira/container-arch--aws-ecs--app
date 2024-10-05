@@ -27,14 +27,14 @@ popd
 echo "TERRAFORM - CI"
 pushd terraform/
 
-echo "TERRAFORM CI - TERRAFORM INIT"
-terraform init -backend-config="environment/$BRANCH_NAME_SHORT/backend.tfvars"
-
 echo "TERRAFORM - FORMAT CHECK"
 terraform fmt -recursive -check
 
 echo "TERRAFORM - VALIDATE"
 terraform validate
+
+echo "TERRAFORM CI - TERRAFORM INIT"
+terraform init -backend-config="environment/$BRANCH_NAME_SHORT/backend.tfvars"
 
 popd
 
