@@ -6,10 +6,10 @@ set -e
 export AWS_ACCOUNT_ID=923672208632
 export AWS_PAGER=""
 export APP_NAME="linuxtips-app"
+export CLUSTER_NAME="linuxtips-ecscluster"
 
 # App CI
 echo "APP - CI"
-
 pushd app/
 
 echo "APP - LINT"
@@ -23,7 +23,6 @@ popd
 
 # Terraform CI
 echo "TERRAFORM - CI"
-
 pushd terraform/
 
 echo "TERRAFORM - FORMAT CHECK"
@@ -36,7 +35,6 @@ popd
 
 # App Build
 echo "APP BUILD"
-
 pushd app/
 
 echo "APP BUILD - GET BUILD INFO"
@@ -71,35 +69,34 @@ REPO_TAG="$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$GIT_COMMIT
 docker build --platform linux/amd64 -t app .
 docker tag app:latest $REPO_TAG
 
-echo "APP BUILD - PUSH"
-docker push $REPO_TAG
-
 popd
 
 # App Publish
 echo "APP PUBLISH"
+pushd app/
 
-pushd terraform/
-BRANCH_NAME=$(git branch --show-current)
-BRANCH_NAME_SHORT=$(echo $BRANCH_NAME | cut -d '/' -f 2 | cut -c 1-3)
-
-echo "APP PUBLISH - TERRAFORM INIT"
-terraform init -backend-config="environment/$BRANCH_NAME_SHORT/backend.tfvars"
-
-echo "APP PUBLISH - TERRAFORM PLAN"
-terraform plan -var="container_image=$REPO_TAG" -var-file="environment/$BRANCH_NAME_SHORT/terraform.tfvars"
-
-echo "APP PUBLISH - TERRAFORM APPLY"
-terraform apply -auto-approve -var="container_image=$REPO_TAG" -var-file="environment/$BRANCH_NAME_SHORT/terraform.tfvars"
+echo "APP PUBLISH - PUSH"
+docker push $REPO_TAG
 
 popd
 
 # Terraform Apply
-echo "TERRAFORM APPLY"
-
+echo "TERRAFORM CD"
 pushd terraform/
 
+BRANCH_NAME=$(git branch --show-current)
+BRANCH_NAME_SHORT=$(echo $BRANCH_NAME | cut -d '/' -f 2 | cut -c 1-3)
 
+echo "TERRAFORM CD - TERRAFORM INIT"
+terraform init -backend-config="environment/$BRANCH_NAME_SHORT/backend.tfvars"
 
+echo "TERRAFORM CD - TERRAFORM PLAN"
+terraform plan -var="container_image=$REPO_TAG" -var-file="environment/$BRANCH_NAME_SHORT/terraform.tfvars"
+
+echo "TERRAFORM CD - TERRAFORM APPLY"
+terraform apply -auto-approve -var="container_image=$REPO_TAG" -var-file="environment/$BRANCH_NAME_SHORT/terraform.tfvars"
+
+echo "TERRAFORM CD - WAIT FOR ECS SERVICE"
+aws ecs wait services-stable --cluster $CLUSTER_NAME --services $APP_NAME
 
 popd
