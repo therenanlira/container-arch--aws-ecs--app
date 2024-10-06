@@ -19,16 +19,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY || '' }}
+
       - name: Setup Golang
         uses: actions/setup-go@v5
         with:
           go-version: '1.23'
 
       - name: Install Go Lint
-        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59.1
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 
       - name: Run Go Lint
-        run: golangci-lint run ./... -E errcheck
+        run: |
+          golangci-lint run ./... -E errcheck
+          golangci-lint run ./... -E staticcheck
+          golangci-lint run ./... -E govet
         working-directory: ./app
 
       - name: Run Go Test

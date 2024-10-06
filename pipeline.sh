@@ -5,6 +5,7 @@ set -e
 
 export AWS_ACCOUNT_ID=923672208632
 export AWS_PAGER=""
+export AWS_REGION="us-east-1"
 export APP_NAME="linuxtips-app"
 export CLUSTER_NAME="linuxtips-ecscluster"
 export BRANCH_NAME=$(git branch --show-current)
@@ -47,7 +48,7 @@ GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
 echo "GIT_COMMIT_HASH: $GIT_COMMIT_HASH"
 
 echo "APP BUILD - ECR LOGIN"
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
+aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
 echo "APP BUILD - CHECK ECR REPOSITORY"
 set +e
@@ -70,7 +71,7 @@ fi
 set -e
 
 echo "APP BUILD - BUILD"
-REPO_TAG="$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$GIT_COMMIT_HASH"
+REPO_TAG="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:$GIT_COMMIT_HASH"
 docker build --platform linux/amd64 -t app .
 docker tag app:latest $REPO_TAG
 
@@ -96,6 +97,6 @@ echo "TERRAFORM CD - TERRAFORM APPLY"
 terraform apply -auto-approve -var="container_image=$REPO_TAG" -var-file="environment/$BRANCH_NAME_SHORT/terraform.tfvars"
 
 echo "TERRAFORM CD - WAIT FOR ECS SERVICE"
-aws ecs wait services-stable --cluster $CLUSTER_NAME --services $APP_NAME
+aws ecs wait services-stable --cluster $CLUSTER_NAME --services $APP_NAME --region $AWS_REGION
 
 popd
