@@ -144,7 +144,7 @@ jobs:
           AWS_REGION: ${{ env.AWS_REGION }}
 
       - name: Terraform Plan
-        run: terraform plan -var-file="environment/${GITHUB_REF_NAME}/terraform.tfvars" -var container_image=${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPO_NAME }}:${GITHUB_SHA::8} -out=tfplan
+        run: terraform plan -var-file="environment/${GITHUB_REF_NAME}/terraform.tfvars" -var="container_image=${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPO_NAME }}:${GITHUB_SHA::8}" -out=tfplan
         working-directory: ./terraform
 
       - name: Terraform Apply
