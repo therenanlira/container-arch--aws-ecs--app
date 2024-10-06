@@ -1,5 +1,5 @@
 module "service" {
-  source = "git@github.com:therenanlira/container-arch--aws-ecs--module.git?ref=v1"
+  source = "git@github.com:therenanlira/container-arch--aws-ecs--module.git?ref=v1.1.0"
   region = var.region
 
   container_image = var.container_image
