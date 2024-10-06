@@ -12,6 +12,11 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "container_image" {
+  type        = string
+  description = "The container image to run"
+}
+
 variable "service_name" {
   description = "The name of the ECS service"
   type        = string
@@ -39,11 +44,11 @@ variable "service_healthcheck" {
 
 variable "service_launch_type" {
   description = "The launch type for the service"
-  type        = list(object({
+  type = list(object({
     capacity_provider = string
     weight            = number
   }))
-  default     = [
+  default = [
     {
       capacity_provider = "SPOT"
       weight            = 100

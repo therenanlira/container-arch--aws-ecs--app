@@ -1,6 +1,8 @@
 module "service" {
-  source = "../../container-arch--aws-ecs--module/"
+  source = "git@github.com:therenanlira/container-arch--aws-ecs--module.git?ref=v1.1.0"
   region = var.region
+
+  container_image = var.container_image
 
   cluster_name         = var.cluster_name
   service_name         = var.service_name
