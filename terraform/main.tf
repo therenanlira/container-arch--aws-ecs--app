@@ -1,5 +1,5 @@
 module "service" {
-  source = "git@github.com:therenanlira/container-arch--aws-ecs--module.git?ref=v1.1.0"
+  source = "git@github.com:therenanlira/container-arch--aws-ecs--module.git?ref=v1.2.0"
   region = var.region
 
   container_image = var.container_image
@@ -19,11 +19,7 @@ module "service" {
 
   vpc_id = data.aws_ssm_parameter.vpc_id.value
 
-  private_subnets = [
-    data.aws_ssm_parameter.private_subnet_1a.value,
-    data.aws_ssm_parameter.private_subnet_1b.value,
-    data.aws_ssm_parameter.private_subnet_1c.value
-  ]
+  private_subnets = local.private_subnets
 
   environment_variables = var.environment_variables
   capabilities          = var.capabilities
@@ -51,4 +47,14 @@ module "service" {
   scale_cpu_tracking      = var.scale_cpu_tracking
   scale_requests_tracking = var.scale_requests_tracking
   alb_arn                 = data.aws_ssm_parameter.alb_arn.value
+
+  efs_volumes = [
+    {
+      volume_name      = "example-volume"
+      file_system_id   = aws_efs_file_system.efs.id
+      file_system_root = "/"
+      mount_point      = "/mnt/efs"
+      read_only        = false
+    }
+  ]
 }

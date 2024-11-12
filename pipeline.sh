@@ -96,6 +96,9 @@ terraform plan -var="container_image=$REPO_TAG" -var-file="environment/$BRANCH_N
 echo "TERRAFORM CD - TERRAFORM APPLY"
 terraform apply -auto-approve -var="container_image=$REPO_TAG" -var-file="environment/$BRANCH_NAME_SHORT/terraform.tfvars"
 
+echo "TERRAFORM CD - FORCE ECS TASK UPDATE"
+aws ecs update-service --cluster $CLUSTER_NAME --service $APP_NAME --region $AWS_REGION --force-new-deployment --output text > /dev/null
+
 echo "TERRAFORM CD - WAIT FOR ECS SERVICE"
 aws ecs wait services-stable --cluster $CLUSTER_NAME --services $APP_NAME --region $AWS_REGION
 
