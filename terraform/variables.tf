@@ -15,6 +15,7 @@ variable "cluster_name" {
 variable "container_image" {
   type        = string
   description = "The container image to run"
+  default     = "nginx:latest"
 }
 
 variable "service_name" {
@@ -208,4 +209,16 @@ variable "scale_cpu_tracking" {
 variable "scale_requests_tracking" {
   description = "The name of the requests tracking resource"
   type        = number
+}
+
+variable "efs_volumes" {
+  description = "The EFS volumes for the task definition"
+  type = list(object({
+    volume_name      = string
+    file_system_id   = string
+    file_system_root = string
+    mount_point      = string
+    read_only        = bool
+  }))
+  default = []
 }
