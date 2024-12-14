@@ -7,6 +7,8 @@ other_dirs=()
 REPO_NAME="linuxtips/linuxtips-app"
 REPO_EXISTS=$(aws ecr describe-repositories --repository-names $REPO_NAME 2>&1)
 
+export AWS_REGION="us-east-1"
+
 # Change directory to the root of the repository
 cd ../
 
