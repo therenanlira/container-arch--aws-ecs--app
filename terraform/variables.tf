@@ -77,6 +77,15 @@ variable "environment_variables" {
   }))
 }
 
+variable "secrets" {
+  type = list(object({
+    name      = string
+    valueFrom = string
+  }))
+  description = "Secret Manager or Parameter Store list of secrets"
+  default     = []
+}
+
 variable "capabilities" {
   description = "The capabilities for the task definition"
   type        = list(string)

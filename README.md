@@ -30,10 +30,18 @@ container-arch--aws-ecs--app/ .github/ workflows/ dev.yml .gitignore app/ Docker
    terraform init
    ```
 
-3. Apply the Terraform configuration:
+3. Apply the Terraform configuration deploying all the necessary infrastructure:
+
+   PS: For this step, it is needed to have cloned the repositories [container-arch--aws-ecs--module](git@github.com:therenanlira/container-arch--aws-ecs--module.git) and [container-arch--aws-ecs--cluster](git@github.com:therenanlira/container-arch--aws-ecs--cluster.git) as well.
 
    ```sh
-   terraform apply -var-file="environment/dev/terraform.tfvars"
+   ./tf-container-arch.sh
+   ```
+
+4. Apply only changes made to the app or to the infrastructure in the repository [container-arch--aws-ecs--app](git@github.com:therenanlira/container-arch--aws-ecs--app.git)
+
+   ```sh
+   ./pipeline.sh
    ```
 
 ### Scripts

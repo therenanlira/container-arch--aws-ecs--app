@@ -113,7 +113,13 @@ func main() {
     }
 
     return c.SendStatus(fiber.StatusNoContent)
-})
+	})
+
+	app.Get("/printenv", func (c *fiber.Ctx) error {
+		return c.JSON(fiber.Map{
+			"env": os.Environ(),
+		})
+	})
 
 	_ = app.Listen(":8080")
 }

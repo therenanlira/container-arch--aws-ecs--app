@@ -1,5 +1,5 @@
 module "service" {
-  source = "git@github.com:therenanlira/container-arch--aws-ecs--module.git?ref=v1.2.0"
+  source = "git@github.com:therenanlira/container-arch--aws-ecs--module.git?ref=v1.3.0"
   region = var.region
 
   container_image = var.container_image
@@ -23,6 +23,17 @@ module "service" {
 
   environment_variables = var.environment_variables
   capabilities          = var.capabilities
+
+  secrets = [
+    {
+      name      = "SSM_PARAMETER_VALUE_VARIABLE"
+      valueFrom = aws_ssm_parameter.parameter.arn
+    },
+    {
+      name      = "SECRET_MANAGER_VALUE_VARIABLE"
+      valueFrom = aws_secretsmanager_secret.secret.arn
+    }
+  ]
 
   scale_type   = var.scale_type
   task_minimum = var.task_minimum
